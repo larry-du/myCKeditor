@@ -1,8 +1,11 @@
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+
+import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
@@ -11,10 +14,8 @@ import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 // import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 // import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
-
 import ImageUploadPlugin from '@ckeditor/ckeditor5-image/src/imageupload'
 
-import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 // import List from '@ckeditor/ckeditor5-list/src/list';
 import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
 // import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
@@ -24,11 +25,13 @@ import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
+
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 
 import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard';
+
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
@@ -36,11 +39,8 @@ import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/
 
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
-
-
 
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
@@ -77,7 +77,6 @@ import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
 //         } );
 //     }
 // }
-
 
 ClassicEditor
     .create( document.querySelector( '#editor' ), {

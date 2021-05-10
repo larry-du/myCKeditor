@@ -6,11 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    // https://webpack.js.org/configuration/entry-context/
-    // entry: './app.js',
     entry: './src/index.js',
-
-    // https://webpack.js.org/configuration/output/
     output: {
         path: path.resolve( __dirname, 'dist' ),
         filename: '[name].bundle.js',
@@ -19,15 +15,13 @@ module.exports = {
 
     module: {
         rules: [
-
             {
                 test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-
-                use: [ 'raw-loader' ]
+                // use: [ 'raw-loader' ]
+                type: 'asset/source',
             },
             {
                 test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-
                 use: [
                     {
                         loader: 'style-loader',
@@ -47,7 +41,8 @@ module.exports = {
                             minify: true
                         } )
                     }
-                ]
+                ],
+                type: 'javascript/auto'
             }
         ]
     },
