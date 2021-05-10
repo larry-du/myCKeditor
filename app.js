@@ -4,13 +4,23 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Image from '@ckeditor/ckeditor5-image/src/image';
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
+import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
+import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
+// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+// import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
+
+import ImageUploadPlugin from '@ckeditor/ckeditor5-image/src/imageupload'
 
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
-import List from '@ckeditor/ckeditor5-list/src/list';
-import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import imageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
-import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
-import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+// import List from '@ckeditor/ckeditor5-list/src/list';
+import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
+// import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+// import imageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
+// import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
+// import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
@@ -30,56 +40,68 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 
-import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
-// import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 
 
-class InsertImage extends Plugin {
-    init() {
-        const editor = this.editor;
-
-        editor.ui.componentFactory.add( 'insertImage', locale => {
-            const view = new ButtonView( locale );
-
-            view.set( {
-                label: 'Insert image',
-                icon: imageIcon,
-                tooltip: true
-            } );
-
-            // Callback executed once the image is clicked.
-            view.on( 'execute', () => {
-                const imageUrl = prompt( 'Image URL' );
-
-                editor.model.change( writer => {
-                    const imageElement = writer.createElement( 'image', {
-                        src: imageUrl
-                    } );
-
-                    // Insert the image in the current selection location.
-                    editor.model.insertContent( imageElement, editor.model.document.selection );
-                } );
-            } );
-
-            return view;
-        } );
-    }
-}
+import Link from '@ckeditor/ckeditor5-link/src/link';
+import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
 
 
+// class InsertImage extends Plugin {
+//     init() {
+//         const editor = this.editor;
+
+//         editor.ui.componentFactory.add( 'insertImage', locale => {
+//             const view = new ButtonView( locale );
+
+//             view.set( {
+//                 label: 'Insert image',
+//                 icon: imageIcon,
+//                 tooltip: true
+//             } );
+
+//             // Callback executed once the image is clicked.
+//             // view.on( 'execute', () => {
+//             //     const imageUrl = prompt( 'Image URL' );
+
+//             //     editor.model.change( writer => {
+//             //         const imageElement = writer.createElement( 'image', {
+//             //             src: imageUrl
+//             //         } );
+
+//             //         // Insert the image in the current selection location.
+//             //         editor.model.insertContent( imageElement, editor.model.document.selection );
+//             //     } );
+//             // } );
+
+//             return view;
+//         } );
+//     }
+// }
+
+document.querySelector( '#submit' ).addEventListener( 'click', () => {
+    const editorData = editor.getData();
+    console.log(editorData)
+
+} );
 ClassicEditor
     .create( document.querySelector( '#editor' ), {
         plugins: [ 
             Essentials, 
             Paragraph,
             Heading, 
-            List, 
+            // List,
+            ListStyle, 
             Bold, 
             Italic,
             Image,
-            InsertImage,
+            ImageToolbar,
             ImageCaption,
+            ImageStyle, 
+            ImageResize,
             // EasyImage,
+            ImageUploadPlugin,
+            Base64UploadAdapter,
+            // SimpleUploadAdapter,
             Alignment,
             Highlight,
             HorizontalLine,
@@ -92,29 +114,31 @@ ClassicEditor
             TableToolbar,
             TableProperties, 
             TableCellProperties,
-            Base64UploadAdapter
+            Link, 
+            AutoLink
          ],
-        // toolbar: [ 'heading','numberedList', 'bulletedList','bold', 'italic','insertImage','alignment' ]
         toolbar: {
             items: [
                 'heading', '|',
-                'bold', 'italic', 'link', '|',
+                'bold', 'italic', 'link','specialCharacters','horizontalLine','insertTable','alignment','highlight', 'removeFormat','|',
                 'bulletedList', 'numberedList', '|',
-                'undo', 'redo', '|',
-                'alignment','|',
-                'insertImage','|',
-                'highlight',
-                'horizontalLine',
-                'mediaEmbed',
-                'removeFormat',
-                'specialCharacters',
-                'insertTable', 
-                'imageStyle:alignLeft', 
-                'imageStyle:alignCenter', 
-                'imageStyle:alignRight',
-                'uploadImage'
+                'imageUpload','mediaEmbed','|',
+                'undo', 'redo'
             ],
             shouldNotGroupWhenFull: true
+        },
+        link: {
+            decorators: {
+                defaultProtocol: 'https://',
+                addTargetToExternalLinks: {
+                    mode: 'automatic',
+                    callback: url => /^(https?:)?\/\//.test( url ),
+                    attributes: {
+                        target: '_blank',
+                        rel: 'noopener noreferrer'
+                    }
+                }
+            }
         },
         highlight: {
             options: [
@@ -125,29 +149,41 @@ ClassicEditor
                     color: 'var(--ck-highlight-pen-red)',
                     type: 'pen'
                 },
-                {
-                    model: 'greenMarker',
-                    class: 'marker-green',
-                    title: 'Green marker',
-                    color: 'var(--ck-highlight-marker-green)',
-                    type: 'marker'
-                },
-                {   model: 'yellowMarker', 
-                    class: 'marker-yellow', 
-                    title: 'Yellow Marker', 
-                    color: 'var(--ck-highlight-marker-yellow)', 
-                    type: 'marker' 
-                }
+                // {
+                //     model: 'greenMarker',
+                //     class: 'marker-green',
+                //     title: 'Green marker',
+                //     color: 'var(--ck-highlight-marker-green)',
+                //     type: 'marker'
+                // },
+                // {   model: 'yellowMarker', 
+                //     class: 'marker-yellow', 
+                //     title: 'Yellow Marker', 
+                //     color: 'var(--ck-highlight-marker-yellow)', 
+                //     type: 'marker' 
+                // }
 
             ]
         },
         heading: {
             options: [
                 { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading2' }
+                { model: 'heading1', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading2', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
             ]
         },
+        // simpleUpload: {
+        //     uploadUrl: ' /content/news',
+
+        //     // Enable the XMLHttpRequest.withCredentials property.
+        //     withCredentials: true,
+
+        //     // Headers sent along with the XMLHttpRequest to the upload server.
+        //     // headers: {
+        //     //     'X-CSRF-TOKEN': 'CSRF-Token',
+        //     //     Authorization: 'Bearer <JSON Web Token>'
+        //     // }
+        // },
         table: {
             contentToolbar: [
                 'tableColumn', 
@@ -157,9 +193,15 @@ ClassicEditor
                 'tableCellProperties' 
             ]
         },
-        image:{
+        image: {
+            toolbar: [
+                'imageTextAlternative','|', 
+                'imageStyle:alignLeft', 
+                'imageStyle:full', 
+                'imageStyle:alignRight'
+            ],
             styles: [
-                'alignLeft', 'alignCenter', 'alignRight'
+                'full', 'alignLeft', 'alignRight'
             ]
         }
     } )
@@ -171,4 +213,4 @@ ClassicEditor
         console.error( error.stack );
     } );
 
-    
+
