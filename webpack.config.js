@@ -1,21 +1,25 @@
-'use strict';
-
-const path = require( 'path' );
+// 'use strict';
+const path = require('path');
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     // https://webpack.js.org/configuration/entry-context/
-    entry: './app.js',
+    // entry: './app.js',
+    entry: './src/index.js',
 
     // https://webpack.js.org/configuration/output/
     output: {
         path: path.resolve( __dirname, 'dist' ),
-        filename: '[name].bundle.js'
+        filename: '[name].bundle.js',
+        publicPath: './'
     },
 
     module: {
         rules: [
+
             {
                 test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
 
@@ -47,6 +51,13 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: './src/ckEditor.html',
+            inject: 'body'
+        }),
+    ],
 
     // Useful for debugging.
     devtool: 'source-map',
