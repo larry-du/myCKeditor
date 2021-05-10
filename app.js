@@ -78,18 +78,13 @@ import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
 //     }
 // }
 
-document.querySelector( '#submit' ).addEventListener( 'click', () => {
-    const editorData = editor.getData();
-    console.log(editorData)
 
-} );
 ClassicEditor
     .create( document.querySelector( '#editor' ), {
         plugins: [ 
             Essentials, 
             Paragraph,
             Heading, 
-            // List,
             ListStyle, 
             Bold, 
             Italic,
@@ -98,7 +93,6 @@ ClassicEditor
             ImageCaption,
             ImageStyle, 
             ImageResize,
-            // EasyImage,
             ImageUploadPlugin,
             Base64UploadAdapter,
             // SimpleUploadAdapter,
@@ -206,11 +200,18 @@ ClassicEditor
         }
     } )
     .then( editor => {
-        console.log( 'Editor was initialized', editor );
+        // console.log( 'Editor was initialized', editor );
         window.editor = editor;
     } )
     .catch( error => {
         console.error( error.stack );
     } );
+
+document.querySelector( '#sendHTMLTag' ).addEventListener( 'click', () => {
+    const editorData = editor.getData();
+    document.body.insertAdjacentHTML('beforeend',`<textarea style="width:90%;height:500px;resize: vertical; display:block;margin:0 auto;" class="demoDOM"></textarea>`);
+    const demoDome = document.querySelector(".demoDOM");
+    demoDome.value = editorData;
+} );
 
 
